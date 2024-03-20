@@ -8,9 +8,9 @@ type Field interface {
 
 type FunctionDefineField struct {
 	TType
-	Ident  Node
-	Params Node
-	Block  Node
+	Ident  *Node
+	Params *Node
+	Block  *Node
 }
 
 func (f *FunctionDefineField) GetKind() FieldKind {
@@ -21,7 +21,7 @@ func (f *FunctionDefineField) GetTType() TType {
 }
 
 type BlockField struct {
-	Stmts Node
+	Stmts *Node
 }
 
 func (f *BlockField) GetKind() FieldKind {
@@ -30,7 +30,7 @@ func (f *BlockField) GetKind() FieldKind {
 
 type MultipleField struct {
 	TType
-	Values []Node
+	Values []*Node
 }
 
 func (f *MultipleField) GetKind() FieldKind {
@@ -42,7 +42,7 @@ func (f *MultipleField) GetTType() TType {
 
 type ReturnField struct {
 	TType
-	Value Node
+	Value *Node
 }
 
 func (f *ReturnField) GetKind() FieldKind {
@@ -53,7 +53,7 @@ func (f *ReturnField) GetTType() TType {
 }
 
 type IfElseField struct {
-	Block Node
+	Block *Node
 }
 
 func (f *IfElseField) GetKind() FieldKind {
@@ -61,7 +61,7 @@ func (f *IfElseField) GetKind() FieldKind {
 }
 
 type WhileField struct {
-	Block Node
+	Block *Node
 }
 
 func (f *WhileField) GetKind() FieldKind {
@@ -69,7 +69,7 @@ func (f *WhileField) GetKind() FieldKind {
 }
 
 type ForField struct {
-	Block Node
+	Block *Node
 }
 
 func (f *ForField) GetKind() FieldKind {
@@ -77,8 +77,8 @@ func (f *ForField) GetKind() FieldKind {
 }
 
 type AssignField struct {
-	To    Node
-	Value Node
+	To    *Node
+	Value *Node
 }
 
 func (f *AssignField) GetKind() FieldKind {
@@ -86,8 +86,8 @@ func (f *AssignField) GetKind() FieldKind {
 }
 
 type BinaryField struct {
-	LHS Node
-	RHS Node
+	LHS *Node
+	RHS *Node
 }
 
 func (f *BinaryField) GetKind() FieldKind {
@@ -112,7 +112,7 @@ func (f *LiteralField) GetTType() TType {
 }
 
 type NotField struct {
-	Value Node
+	Value *Node
 }
 
 func (f *NotField) GetKind() FieldKind {
@@ -124,8 +124,8 @@ func (f *NotField) GetTType() TType {
 
 type CallField struct {
 	TType
-	Ident Node
-	Args  Node
+	Ident *Node
+	Args  *Node
 }
 
 func (f *CallField) GetKind() FieldKind {

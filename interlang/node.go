@@ -34,6 +34,6 @@ func (n *Node) GetField() Field {
 	return n.Field
 }
 
-func NewNode(kind NodeKind, field Field) Node {
-	return Node{kind, field}
+func NewNode(kind NodeKind, field Field) *Node {
+	return &Node{kind, field}
 }
