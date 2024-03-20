@@ -21,7 +21,7 @@ func (f *FunctionDefineField) GetTType() TType {
 }
 
 type BlockField struct {
-	Stmts *Node
+	Stmts []*Node
 }
 
 func (f *BlockField) GetKind() FieldKind {
