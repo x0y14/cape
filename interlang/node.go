@@ -17,7 +17,7 @@ const (
 	Binary
 	Literal
 	Not
-	Tuple
+	Multiple
 	Return
 	Call
 )

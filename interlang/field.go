@@ -144,15 +144,15 @@ func (f *NotField) GetTType() TType {
 	return Bool
 }
 
-type TupleField struct {
+type MultipleField struct {
 	TType
 	Values []Node
 }
 
-func (f *TupleField) GetKind() FieldKind {
-	return Tuple
+func (f *MultipleField) GetKind() FieldKind {
+	return Multiple
 }
-func (f *TupleField) GetTType() TType {
+func (f *MultipleField) GetTType() TType {
 	return f.TType
 }
 
