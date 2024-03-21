@@ -91,6 +91,7 @@ func (f *AssignField) GetKind() FieldKind {
 }
 
 type BinaryField struct {
+	Operation
 	LHS *Node
 	RHS *Node
 }
