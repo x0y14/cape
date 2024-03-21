@@ -53,7 +53,9 @@ func (f *ReturnField) GetTType() TType {
 }
 
 type IfElseField struct {
-	Block *Node
+	Cond      *Node
+	IfBlock   *Node
+	ElseBlock *Node
 }
 
 func (f *IfElseField) GetKind() FieldKind {
