@@ -71,6 +71,9 @@ func (f *WhileField) GetKind() FieldKind {
 }
 
 type ForField struct {
+	Init  *Node
+	Cond  *Node
+	Loop  *Node
 	Block *Node
 }
 
