@@ -17,6 +17,13 @@ const (
 	Literal
 	Not
 	Call
+
+	Add
+	Sub
+	Mul
+	Div
+	AND
+	OR
 )
 
 type Node struct {

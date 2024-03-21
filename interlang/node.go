@@ -20,6 +20,13 @@ const (
 	Multiple
 	Return
 	Call
+
+	Add
+	Sub
+	Mul
+	Div
+	AND
+	OR
 )
 
 type Node struct {
