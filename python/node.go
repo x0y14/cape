@@ -18,6 +18,8 @@ const (
 	Not
 	Call
 
+	Ident
+
 	Add
 	Sub
 	Mul

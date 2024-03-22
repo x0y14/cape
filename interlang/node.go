@@ -21,6 +21,8 @@ const (
 	Return
 	Call
 
+	Ident
+
 	Add
 	Sub
 	Mul
