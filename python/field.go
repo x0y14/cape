@@ -141,3 +141,12 @@ func (f *CallField) GetKind() FieldKind {
 func (f *CallField) GetTType() TType {
 	return f.TType
 }
+
+type IdentField struct {
+	TType
+	S string
+}
+
+func (f *IdentField) GetKind() FieldKind {
+	return Ident
+}
