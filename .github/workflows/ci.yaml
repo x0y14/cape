@@ -10,6 +10,6 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Install Deps
-        run: go get .
+        run: go mod tidy
       - name: Test
         run: go test ./python
