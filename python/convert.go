@@ -42,7 +42,7 @@ func functionDefine(iNode *interlang.Node) (*Node, error) {
 	iReturnValueType := iField.GetTType()
 	returnValueType, err := ConvertTypeFromInterLang(iReturnValueType)
 
-	iIdentField := iField.Ident.GetField().(*interlang.LiteralField)
+	iIdentField := iField.Ident.GetField().(*interlang.IdentField)
 	ident := iIdentField.S
 
 	params, err := functionDefineParams(iField.Params)
@@ -59,7 +59,7 @@ func functionDefine(iNode *interlang.Node) (*Node, error) {
 		FunctionDefine,
 		&FunctionDefineField{
 			returnValueType,
-			NewNode(Literal, &LiteralField{S: ident}),
+			NewNode(Ident, &IdentField{S: ident}),
 			params,
 			stmts,
 		},
