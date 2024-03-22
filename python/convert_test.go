@@ -13,7 +13,7 @@ func TestConvertNodeFromInterLang(t *testing.T) {
 		expect []*Node
 	}{
 		{
-			"int",
+			"def",
 			[]*interlang.Node{
 				interlang.NewNode(interlang.FunctionDefine, &interlang.FunctionDefineField{
 					TType:  nil,
@@ -28,6 +28,29 @@ func TestConvertNodeFromInterLang(t *testing.T) {
 					Ident:  NewNode(Ident, &IdentField{S: "main"}),
 					Params: nil,
 					Block:  NewNode(Block, &BlockField{Stmts: nil}),
+				}),
+			},
+		},
+		{
+			"int",
+			[]*interlang.Node{
+				interlang.NewNode(interlang.FunctionDefine, &interlang.FunctionDefineField{
+					TType:  nil,
+					Ident:  interlang.NewNode(interlang.Ident, &interlang.IdentField{S: "main"}),
+					Params: nil,
+					Block: interlang.NewNode(interlang.Block, &interlang.BlockField{Stmts: []*interlang.Node{
+						interlang.NewNode(interlang.Return, &interlang.ReturnField{Value: interlang.NewNode(interlang.Literal, &interlang.LiteralField{TType: interlang.Integer, I: 32})}),
+					}}),
+				}),
+			},
+			[]*Node{
+				NewNode(FunctionDefine, &FunctionDefineField{
+					TType:  nil,
+					Ident:  NewNode(Ident, &IdentField{S: "main"}),
+					Params: nil,
+					Block: NewNode(Block, &BlockField{Stmts: []*Node{
+						NewNode(Return, &ReturnField{Value: NewNode(Literal, &LiteralField{TType: Integer, I: 32})}),
+					}}),
 				}),
 			},
 		},
