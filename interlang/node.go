@@ -22,20 +22,6 @@ const (
 	Call
 
 	Ident
-
-	Add
-	Sub
-	Mul
-	Div
-	Mod
-	AND
-	OR
-	Eq
-	Ne
-	Lt
-	Le
-	Gt
-	Ge
 )
 
 type Node struct {
