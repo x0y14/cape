@@ -16,7 +16,7 @@ func TestConvertNodeFromInterLang(t *testing.T) {
 			"def",
 			[]*interlang.Node{
 				interlang.NewNode(interlang.FunctionDefine, &interlang.FunctionDefineField{
-					TType:  nil,
+					TType:  interlang.Integer,
 					Ident:  interlang.NewNode(interlang.Ident, &interlang.IdentField{S: "main"}),
 					Params: nil,
 					Block:  interlang.NewNode(interlang.Block, &interlang.BlockField{Stmts: nil}),
@@ -35,7 +35,7 @@ func TestConvertNodeFromInterLang(t *testing.T) {
 			"int",
 			[]*interlang.Node{
 				interlang.NewNode(interlang.FunctionDefine, &interlang.FunctionDefineField{
-					TType:  nil,
+					TType:  interlang.Integer,
 					Ident:  interlang.NewNode(interlang.Ident, &interlang.IdentField{S: "main"}),
 					Params: nil,
 					Block: interlang.NewNode(interlang.Block, &interlang.BlockField{Stmts: []*interlang.Node{

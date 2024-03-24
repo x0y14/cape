@@ -22,9 +22,16 @@ func ConvertNodeFromInterLang(iNodes []*interlang.Node) ([]*Node, error) {
 }
 
 func ConvertTypeFromInterLang(tt interlang.TType) (TType, error) {
-	// TODO
-	_ = tt
-	return nil, nil
+	switch tt {
+	case interlang.Integer:
+		return Integer, nil
+	case interlang.String:
+		return String, nil
+	case interlang.Bool:
+		return Bool, nil
+	default:
+		return nil, nil
+	}
 }
 
 func toplevel(iNode *interlang.Node) (*Node, error) {
@@ -39,8 +46,9 @@ func toplevel(iNode *interlang.Node) (*Node, error) {
 func functionDefine(iNode *interlang.Node) (*Node, error) {
 	iField := iNode.GetField().(*interlang.FunctionDefineField)
 	// typeの変換
-	iReturnValueType := iField.GetTType()
-	returnValueType, err := ConvertTypeFromInterLang(iReturnValueType)
+	//iReturnValueType := iField.GetTType()
+	//returnValueType, err := ConvertTypeFromInterLang(iReturnValueType)
+	var returnValueType TType = nil
 
 	iIdentField := iField.Ident.GetField().(*interlang.IdentField)
 	ident := iIdentField.S
