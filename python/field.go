@@ -92,7 +92,7 @@ func (f *AssignField) GetKind() FieldKind {
 
 type BinaryField struct {
 	TType
-	//Operation
+	Operation
 	LHS *Node
 	RHS *Node
 }
