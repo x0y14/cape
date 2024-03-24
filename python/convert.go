@@ -172,7 +172,7 @@ func assign(iNode *interlang.Node) (*Node, error) {
 
 func andor(iNode *interlang.Node) (*Node, error) {
 	switch iNode.GetKind() {
-	case interlang.AND:
+	case interlang.Binary:
 		iBinaryField := iNode.GetField().(*interlang.BinaryField)
 		iType := iBinaryField.GetTType()
 		pType, err := ConvertTypeFromInterLang(iType)
@@ -187,23 +187,14 @@ func andor(iNode *interlang.Node) (*Node, error) {
 		if err != nil {
 			return nil, err
 		}
-		return NewNode(AND, &BinaryField{pType, lhs, rhs}), nil
-	case interlang.OR:
-		iBinaryField := iNode.GetField().(*interlang.BinaryField)
-		iType := iBinaryField.GetTType()
-		pType, err := ConvertTypeFromInterLang(iType)
-		if err != nil {
-			return nil, err
+		switch iBinaryField.Operation {
+		case interlang.And:
+			return NewNode(Binary, &BinaryField{pType, And, lhs, rhs}), nil
+		case interlang.Or:
+			return NewNode(Binary, &BinaryField{pType, Or, lhs, rhs}), nil
+		default:
+			return equality(iNode)
 		}
-		lhs, err := andor(iBinaryField.LHS)
-		if err != nil {
-			return nil, err
-		}
-		rhs, err := andor(iBinaryField.RHS)
-		if err != nil {
-			return nil, err
-		}
-		return NewNode(OR, &BinaryField{pType, lhs, rhs}), nil
 	default:
 		return equality(iNode)
 	}
@@ -211,7 +202,7 @@ func andor(iNode *interlang.Node) (*Node, error) {
 
 func equality(iNode *interlang.Node) (*Node, error) {
 	switch iNode.GetKind() {
-	case interlang.Eq:
+	case interlang.Binary:
 		iBinaryField := iNode.GetField().(*interlang.BinaryField)
 		iType := iBinaryField.GetTType()
 		pType, err := ConvertTypeFromInterLang(iType)
@@ -226,24 +217,14 @@ func equality(iNode *interlang.Node) (*Node, error) {
 		if err != nil {
 			return nil, err
 		}
-		return NewNode(Eq, &BinaryField{pType, lhs, rhs}), nil
-
-	case interlang.Ne:
-		iBinaryField := iNode.GetField().(*interlang.BinaryField)
-		iType := iBinaryField.GetTType()
-		pType, err := ConvertTypeFromInterLang(iType)
-		if err != nil {
-			return nil, err
+		switch iBinaryField.Operation {
+		case interlang.Eq:
+			return NewNode(Binary, &BinaryField{pType, Eq, lhs, rhs}), nil
+		case interlang.Ne:
+			return NewNode(Binary, &BinaryField{pType, Ne, lhs, rhs}), nil
+		default:
+			return relational(iNode)
 		}
-		lhs, err := equality(iBinaryField.LHS)
-		if err != nil {
-			return nil, err
-		}
-		rhs, err := equality(iBinaryField.RHS)
-		if err != nil {
-			return nil, err
-		}
-		return NewNode(Ne, &BinaryField{pType, lhs, rhs}), nil
 	default:
 		return relational(iNode)
 	}
@@ -251,7 +232,7 @@ func equality(iNode *interlang.Node) (*Node, error) {
 
 func relational(iNode *interlang.Node) (*Node, error) {
 	switch iNode.GetKind() {
-	case interlang.Lt:
+	case interlang.Binary:
 		iBinaryField := iNode.GetField().(*interlang.BinaryField)
 		iType := iBinaryField.GetTType()
 		pType, err := ConvertTypeFromInterLang(iType)
@@ -266,55 +247,18 @@ func relational(iNode *interlang.Node) (*Node, error) {
 		if err != nil {
 			return nil, err
 		}
-		return NewNode(Lt, &BinaryField{pType, lhs, rhs}), nil
-	case interlang.Le:
-		iBinaryField := iNode.GetField().(*interlang.BinaryField)
-		iType := iBinaryField.GetTType()
-		pType, err := ConvertTypeFromInterLang(iType)
-		if err != nil {
-			return nil, err
+		switch iBinaryField.Operation {
+		case interlang.Lt:
+			return NewNode(Binary, &BinaryField{pType, Lt, lhs, rhs}), nil
+		case interlang.Le:
+			return NewNode(Binary, &BinaryField{pType, Le, lhs, rhs}), nil
+		case interlang.Gt:
+			return NewNode(Binary, &BinaryField{pType, Gt, lhs, rhs}), nil
+		case interlang.Ge:
+			return NewNode(Binary, &BinaryField{pType, Ge, lhs, rhs}), nil
+		default:
+			return add(iNode)
 		}
-		lhs, err := relational(iBinaryField.LHS)
-		if err != nil {
-			return nil, err
-		}
-		rhs, err := relational(iBinaryField.RHS)
-		if err != nil {
-			return nil, err
-		}
-		return NewNode(Le, &BinaryField{pType, lhs, rhs}), nil
-	case interlang.Gt:
-		iBinaryField := iNode.GetField().(*interlang.BinaryField)
-		iType := iBinaryField.GetTType()
-		pType, err := ConvertTypeFromInterLang(iType)
-		if err != nil {
-			return nil, err
-		}
-		lhs, err := relational(iBinaryField.LHS)
-		if err != nil {
-			return nil, err
-		}
-		rhs, err := relational(iBinaryField.RHS)
-		if err != nil {
-			return nil, err
-		}
-		return NewNode(Gt, &BinaryField{pType, lhs, rhs}), nil
-	case interlang.Ge:
-		iBinaryField := iNode.GetField().(*interlang.BinaryField)
-		iType := iBinaryField.GetTType()
-		pType, err := ConvertTypeFromInterLang(iType)
-		if err != nil {
-			return nil, err
-		}
-		lhs, err := relational(iBinaryField.LHS)
-		if err != nil {
-			return nil, err
-		}
-		rhs, err := relational(iBinaryField.RHS)
-		if err != nil {
-			return nil, err
-		}
-		return NewNode(Ge, &BinaryField{pType, lhs, rhs}), nil
 	default:
 		return add(iNode)
 	}
@@ -322,7 +266,7 @@ func relational(iNode *interlang.Node) (*Node, error) {
 
 func add(iNode *interlang.Node) (*Node, error) {
 	switch iNode.GetKind() {
-	case interlang.Add:
+	case interlang.Binary:
 		iBinaryField := iNode.GetField().(*interlang.BinaryField)
 		iType := iBinaryField.GetTType()
 		pType, err := ConvertTypeFromInterLang(iType)
@@ -337,25 +281,14 @@ func add(iNode *interlang.Node) (*Node, error) {
 		if err != nil {
 			return nil, err
 		}
-		return NewNode(Add, &BinaryField{pType, lhs, rhs}), nil
-
-	case interlang.Sub:
-		iBinaryField := iNode.GetField().(*interlang.BinaryField)
-		iType := iBinaryField.GetTType()
-		pType, err := ConvertTypeFromInterLang(iType)
-		if err != nil {
-			return nil, err
+		switch iBinaryField.Operation {
+		case interlang.Add:
+			return NewNode(Binary, &BinaryField{pType, Add, lhs, rhs}), nil
+		case interlang.Sub:
+			return NewNode(Binary, &BinaryField{pType, Sub, lhs, rhs}), nil
+		default:
+			return mul(iNode)
 		}
-		lhs, err := add(iBinaryField.LHS)
-		if err != nil {
-			return nil, err
-		}
-		rhs, err := add(iBinaryField.RHS)
-		if err != nil {
-			return nil, err
-		}
-		return NewNode(Sub, &BinaryField{pType, lhs, rhs}), nil
-
 	default:
 		return mul(iNode)
 	}
@@ -363,7 +296,7 @@ func add(iNode *interlang.Node) (*Node, error) {
 
 func mul(iNode *interlang.Node) (*Node, error) {
 	switch iNode.GetKind() {
-	case interlang.Mul:
+	case interlang.Binary:
 		iBinaryField := iNode.GetField().(*interlang.BinaryField)
 		iType := iBinaryField.GetTType()
 		pType, err := ConvertTypeFromInterLang(iType)
@@ -378,39 +311,16 @@ func mul(iNode *interlang.Node) (*Node, error) {
 		if err != nil {
 			return nil, err
 		}
-		return NewNode(Mul, &BinaryField{pType, lhs, rhs}), nil
-	case interlang.Div:
-		iBinaryField := iNode.GetField().(*interlang.BinaryField)
-		iType := iBinaryField.GetTType()
-		pType, err := ConvertTypeFromInterLang(iType)
-		if err != nil {
-			return nil, err
+		switch iBinaryField.Operation {
+		case interlang.Mul:
+			return NewNode(Binary, &BinaryField{pType, Mul, lhs, rhs}), nil
+		case interlang.Div:
+			return NewNode(Binary, &BinaryField{pType, Div, lhs, rhs}), nil
+		case interlang.Mod:
+			return NewNode(Binary, &BinaryField{pType, Mod, lhs, rhs}), nil
+		default:
+			return unary(iNode)
 		}
-		lhs, err := mul(iBinaryField.LHS)
-		if err != nil {
-			return nil, err
-		}
-		rhs, err := mul(iBinaryField.RHS)
-		if err != nil {
-			return nil, err
-		}
-		return NewNode(Div, &BinaryField{pType, lhs, rhs}), nil
-	case interlang.Mod:
-		iBinaryField := iNode.GetField().(*interlang.BinaryField)
-		iType := iBinaryField.GetTType()
-		pType, err := ConvertTypeFromInterLang(iType)
-		if err != nil {
-			return nil, err
-		}
-		lhs, err := mul(iBinaryField.LHS)
-		if err != nil {
-			return nil, err
-		}
-		rhs, err := mul(iBinaryField.RHS)
-		if err != nil {
-			return nil, err
-		}
-		return NewNode(Mul, &BinaryField{pType, lhs, rhs}), nil
 	default:
 		return unary(iNode)
 	}
