@@ -12,4 +12,6 @@ jobs:
       - name: Install Deps
         run: go mod tidy
       - name: Test
-        run: go test ./python
+        run: |
+          go test ./python
+          go test ./c/from_inter
