@@ -15,3 +15,4 @@ jobs:
         run: |
           go test ./python
           go test ./c/from_inter
+          go test ./c/parse
