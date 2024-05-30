@@ -1,9 +1,9 @@
-package parse
+package tokenize
 
-type tokenKind int
+type TokenKind int
 
 const (
-	_ tokenKind = iota
+	_ TokenKind = iota
 	Eof
 	Ident
 	Int
@@ -44,14 +44,14 @@ const (
 )
 
 type Token struct {
-	Kind tokenKind
+	Kind TokenKind
 	S    string
 	I    int
 	F    float64
 	Next *Token
 }
 
-func newToken(kind tokenKind, s string, i int, f float64) *Token {
+func newToken(kind TokenKind, s string, i int, f float64) *Token {
 	return &Token{
 		Kind: kind,
 		S:    s,

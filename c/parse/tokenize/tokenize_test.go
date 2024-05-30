@@ -1,4 +1,4 @@
-package parse
+package tokenize
 
 import (
 	"github.com/google/go-cmp/cmp"
